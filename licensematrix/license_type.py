@@ -9,7 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 
-class License():
+class License:
 	"""Represent a license.
 
 	Source: represents an existing license
@@ -53,9 +53,12 @@ class License():
 		self.type = typeIn
 		self.spdx = spdx
 		if fromDict is not None:
-			self.altNames = fromDict["altnames"]
+==== BASE ====
+			self.title = fromDict["title"]
+			self.shortName = fromDict["short"]
 			self.tags = list(set([fromDict["type"]]
 			+ fromDict["tags"])) if fromDict["type"] is not None else fromDict["tags"]
+==== BASE ====
 			self.must = fromDict["must"]
 			self.cannot = fromDict["cannot"]
 			self.can = fromDict["can"]
@@ -101,14 +104,13 @@ class License():
 		Returns:
 			License: the new, combined license
 		"""
-		return License(self.name + "+" + rhs.name,
-		self.altNames + rhs.altNames,
-		list(set(self.tags + rhs.tags)),
-		list(set(self.must + rhs.must)),
-		list(set(self.cannot + rhs.cannot)),
-		list(set(self.can + rhs.can)),
-		getMostStrictType(self.type, rhs.type),
+==== BASE ====
+		return License(self.name + "+" + rhs.name, self.title + "+" + rhs.title,
+		self.shortName + "+" + rhs.shortName, list(set(self.tags + rhs.tags)),
+		list(set(self.must + rhs.must)), list(set(self.cannot + rhs.cannot)),
+		list(set(self.can + rhs.can)), getMostStrictType(self.type, rhs.type),
 		mergeSPDX(self.spdx, rhs.spdx))
+==== BASE ====
 
 	def mergeIntoDest(self, dest: License):
 		"""Combine two licenses into one super license, but preserve the...
@@ -121,53 +123,12 @@ class License():
 		Returns:
 			License: the new, combined license
 		"""
-		return License(dest.name,
-		dest.altNames,
-		list(set(self.tags + dest.tags)),
-		list(set(self.must + dest.must)),
-		list(set(self.cannot + dest.cannot)),
-		list(set(self.can + dest.can)),
-		getMostStrictType(self.type, dest.type),
-		mergeSPDX(self.spdx, dest.spdx))
-
-	def termsCompatible(self, dest: License) -> bool:
-		"""Check the destination terms (rhs) are compatible with the source license terms (self).
-
-		Args:
-			dest (License): the destination license
-
-		Returns:
-			bool: are the license terms compatible?
-		"""
-		# If any of must is under cannot?
-		if self.must is not None and dest.cannot is not None and len(
-		set(self.must).intersection(dest.cannot)) > 0:
-			return False
-		if self.cannot is not None and dest.must is not None and len(
-		set(self.cannot).intersection(dest.must)) > 0:
-			return False
-		return True
-
-	def naiveCompatSourceLinking(self, dest: License) -> bool:
-		"""Check the destination (rhs) is compatible with the source license (self).
-
-		For linking licenses
-
-		Args:
-			dest (License): the destination license
-
-		Returns:
-			bool: are the licenses compatible?
-		"""
-		strict = ["Public Domain", "Permissive", "Weak Copyleft", "Copyleft", "Viral"]
-		if strict.index(
-		dest.type) > 2: # if the dest license is Copyleft/ Viral then unlikely
-			return False
-		if dest.isViral() and not equal(self, dest):
-			return False
-		if not self.termsCompatible(dest):
-			return False
-		return True
+==== BASE ====
+		return License(dest.name, dest.title, dest.shortName,
+		list(set(self.tags + dest.tags)), list(set(self.must + dest.must)),
+		list(set(self.cannot + dest.cannot)), list(set(self.can + dest.can)),
+		getMostStrictType(self.type, dest.type), mergeSPDX(self.spdx, dest.spdx))
+==== BASE ====
 
 	def naiveCompatSource(self, dest: License) -> bool:
 		"""Check the destination (rhs) is compatible with the source license (self).
@@ -274,4 +235,7 @@ def equal(licenseA: License, licenseB: License) -> bool:
 	Returns:
 		bool: equal?
 	"""
-	return (licenseA.spdx == licenseB.spdx or licenseA.name == licenseB.name)
+==== BASE ====
+	return (licenseA.spdx == licenseB.spdx or licenseA.name == licenseB.name
+	or licenseA.shortName == licenseB.shortName)
+==== BASE ====
