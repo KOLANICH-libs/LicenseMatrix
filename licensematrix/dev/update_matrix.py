@@ -10,10 +10,7 @@ import regex
 import requests
 import requests_cache
 
-try:
-	import ujson as json
-except ImportError:
-	import json
+from .. import json
 
 # pylint: disable=invalid-name
 

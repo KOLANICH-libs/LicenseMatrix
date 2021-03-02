@@ -7,11 +7,7 @@ from operator import itemgetter
 from pathlib import Path
 
 from .license_type import License
-
-try:
-	import ujson as json
-except ImportError:
-	import json
+from . import json
 
 THISDIR = Path(__file__).resolve().parent
 
