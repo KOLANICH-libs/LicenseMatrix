@@ -61,5 +61,10 @@ disable = [
 	"pointless-string-statement",
 	"superfluous-parens",
 	"bad-continuation",
+	"wrong-import-position",
+	"unsubscriptable-object",
+	"no-absolute-import",
+	"too-many-instance-attributes",
+	"too-many-arguments",
 	"python3"
 ]

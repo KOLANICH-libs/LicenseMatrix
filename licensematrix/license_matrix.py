@@ -25,7 +25,8 @@ class LicenseMatrix:
 		"""Make a list of Licenses from a json file."""
 		self.licenses = self.buildLicenses()
 
-	def buildLicenses(self, fileName: str = str(THISDIR / "license_matrix.json")) -> list[License]:
+	@classmethod
+	def buildLicenses(cls, fileName: str = str(THISDIR / "license_matrix.json")) -> list[License]:
 		"""Generate a list of licenses from a specified license_matrix...
 
 		Use license_matrix.json (part of the project) by default. Json format is:
