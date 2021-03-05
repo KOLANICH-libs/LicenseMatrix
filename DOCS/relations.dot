@@ -1,0 +1,56 @@
+digraph G {
+	h[label="holder", shape="diamond"];
+	c[label="contributor", shape="diamond"];
+	u[label="user", shape="diamond"];
+	e[label="end user", shape="diamond"];
+	l[label="license author", shape="diamond"];
+
+	l -> lhr -> h -> hcr -> c -> cur -> u -> uer -> e;
+	h -> hur -> u;
+	u -> uur -> u;
+
+	h -> huurr -> uur [style=dashed];
+	h -> hcurr -> cur [style=dashed];
+	h -> huerr -> uer [style=dashed];
+
+	l -> lhuurrr -> huurr [style=dashed];
+	l -> lhcurrr -> hcurr [style=dashed];
+	l -> lhuerrr -> huerr [style=dashed];
+
+	# "musts"
+	"compensate", "disclose-source", "give-credit", "include-copyright", "include-license", "document-install", "keep-contribution-attribution", "include-original", "document-changes", "rename-software", "threshold-fee" [color="blue"];
+	
+	"compensate" -> {hcr, hur, hcurr} [color="pink"];
+	"disclose-source" -> hcurr [color="pink"];
+	"give-credit" -> hcurr [color="pink"];
+	"include-copyright" -> hcurr [color="pink"];
+	"include-license" -> hcurr [color="pink"];
+	"document-install" -> hcurr [color="pink"];
+	"keep-contribution-attribution" -> hcurr [color="pink"];
+	"include-original" -> hcurr [color="pink"];
+	"document-changes" -> hcurr [color="pink"];
+	"rename-software" -> hcurr [color="pink"];
+
+	"threshold-fee" -> hur [color="pink"];
+	"same-license" -> hcurr, hur, uer [color="pink"];
+
+	# "cans"
+	"commercial-use", "modifications", "distribution", "private-use", "patent-use", "give-warranty", "sublicense", "trademark-use", "relicense" [color="green"];
+
+	"commercial-use" -> {hur, huurr, huerr} [color="pink"];
+	
+	"modifications" -> hcr [color="pink"];
+	"distribution" -> hcr [color="pink"];
+
+	"private-use" -> {hur, hcr, her} [color="pink"];
+	"patent-use" -> {hur, hcr, her} [color="pink"];
+	"trademark-use" -> {hur, hcr, her} [color="pink"];
+
+	"give-warranty" -> {hur, huerr} [color="pink"];
+	"sublicense", "relicense" -> huurr [color="pink"];
+
+	# "can'ts"
+	"disclaim-liability" [color="red"];
+	"disclaim-liability" -> {her, hur, cur, hcr};
+}
+
